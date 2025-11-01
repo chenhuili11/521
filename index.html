@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我们和好吧</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffd6e8 0%, #ffb3d9 50%, #ff9bc5 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .initial-screen {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 60px 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.3);
+            max-width: 400px;
+            width: 100%;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 60px 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.3);
+            max-width: 400px;
+            width: 100%;
+            display: none;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .heart {
+            font-size: 60px;
+            margin-bottom: 30px;
+            animation: heartBeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #ff1493;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #ff69b4;
+            margin-bottom: 50px;
+            opacity: 0.8;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 15px 40px;
+            font-family: inherit;
+        }
+
+        .reveal-btn {
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
+            color: white;
+            box-shadow: 0 10px 30px rgba(255, 20, 147, 0.4);
+        }
+
+        .reveal-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 20, 147, 0.6);
+        }
+
+        .reveal-btn:active {
+            transform: scale(0.98);
+        }
+
+        .yes-btn {
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
+            color: white;
+            box-shadow: 0 10px 30px rgba(255, 20, 147, 0.4);
+        }
+
+        .yes-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 20, 147, 0.6);
+        }
+
+        .yes-btn:active {
+            transform: scale(0.98);
+        }
+
+        .no-btn {
+            background: #f0f0f0;
+            color: #ff1493;
+            border: 2px solid #ff1493;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .no-btn:hover {
+            background: #fff5f7;
+            transform: translateY(5px);
+        }
+
+        /* 纸条样式 */
+        .confetti {
+            position: fixed;
+            pointer-events: none;
+            font-size: 24px;
+        }
+
+        .success-message {
+            margin-top: 40px;
+            font-size: 20px;
+            color: #ff1493;
+            opacity: 0;
+            animation: fadeInMessage 0.6s ease-out 0.5s forwards;
+            font-weight: 600;
+        }
+
+        @keyframes fadeInMessage {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 添加弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+            animation: fadeInModal 0.3s ease-out;
+        }
+
+        @keyframes fadeInModal {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 25px;
+            max-width: 350px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(255, 20, 147, 0.4);
+            animation: slideInModal 0.4s ease-out;
+        }
+
+        @keyframes slideInModal {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-content .heart {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+
+        .modal-content p {
+            font-size: 18px;
+            color: #ff1493;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .modal-close-btn {
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
+            color: white;
+            padding: 12px 40px;
+            font-size: 16px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .modal-close-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .modal-close-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* 添加大爱心的样式 */
+        .big-heart {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%);
+            z-index: 999;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .love-text {
+            font-size: 80px;
+            font-weight: 800;
+            color: #ff1493;
+            animation: scaleUpText 1.2s cubic-bezier(0.36, 0, 0.66, -0.56) forwards;
+            letter-spacing: 5px;
+            text-shadow: 0 4px 15px rgba(255, 20, 147, 0.3);
+            line-height: 1;
+        }
+
+        .love-rose {
+            font-size: 120px;
+            margin-top: 10px;
+            animation: scaleUpRose 1.2s cubic-bezier(0.36, 0, 0.66, -0.56) forwards;
+        }
+
+        @keyframes scaleUpText {
+            from {
+                transform: scale(0);
+                opacity: 1;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleUpRose {
+            from {
+                transform: scale(0) rotate(-30deg);
+                opacity: 1;
+            }
+            to {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        /* 添加第二行文字样式 */
+        .contact-text {
+            font-size: 32px;
+            font-weight: 600;
+            color: #ff69b4;
+            animation: fadeInContact 1.2s ease-out 0.3s forwards;
+            letter-spacing: 2px;
+            opacity: 0;
+            margin-top: 15px;
+        }
+
+        @keyframes fadeInContact {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="initial-screen" id="initialScreen">
+        <div class="heart">❓</div>
+        <h1>点击这里揭开秘密</h1>
+        <button class="reveal-btn" id="revealBtn">揭开</button>
+    </div>
+
+    <div class="container" id="mainContainer">
+        <div class="heart">❤️</div>
+        <h1>我们和好吧，好吗？</h1>
+        <div class="subtitle">一起开始新的开始</div>
+        
+        <div class="button-container">
+            <button class="yes-btn" id="yesBtn">和好</button>
+            <button class="no-btn" id="noBtn">不要</button>
+        </div>
+        
+        <div class="success-message" id="successMsg">熬过了半个月，想过死心也尝试过放下，但你的一举一动还是会牵动我的心，我知道你对未来的不确定性而担心，我现在也在积极的解决，西安，武汉，重庆，成都都在投递简历，也面试了几个，可惜都被拒或者没有消息了。我现在没有解决掉问题，就这样请求和好很不负责任，但是我还是想和你说，我想要和你一起走未来的道路，也希望你可以给我一个机会。</div>
+    </div>
+
+    <!-- 添加弹窗模态框 -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="heart">💪</div>
+            <p>没事儿，我会继续努力的</p>
+            <button class="modal-close-btn" id="closeModalBtn">我知道了</button>
+        </div>
+    </div>
+
+    <script>
+        const revealBtn = document.getElementById('revealBtn');
+        const initialScreen = document.getElementById('initialScreen');
+        const mainContainer = document.getElementById('mainContainer');
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const successMsg = document.getElementById('successMsg');
+        const modal = document.getElementById('modal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        let yesScale = 1;
+        let noScale = 1;
+        let noClickCount = 0; // 添加点击计数器
+
+        // 点击揭开按钮 - 显示主界面
+        revealBtn.addEventListener('click', () => {
+            initialScreen.style.display = 'none';
+            mainContainer.style.display = 'block';
+        });
+
+        // 点击"和好"按钮 - 撒花效果
+        yesBtn.addEventListener('click', () => {
+            createConfetti();
+            successMsg.style.opacity = '1';
+            createBigHeart();
+            // 禁用按钮，防止重复点击
+            yesBtn.disabled = true;
+            noBtn.disabled = true;
+        });
+
+        // 点击"不要"按钮 - "和好"变大，"不要"变小
+        noBtn.addEventListener('click', () => {
+            noClickCount++; // 增加计数器
+            yesScale += 0.2;
+            noScale = Math.max(0.3, noScale - 0.2);
+            
+            yesBtn.style.transform = `scale(${yesScale})`;
+            noBtn.style.transform = `scale(${noScale})`;
+
+            // 当点击次数达到5次时，显示弹窗
+            if (noClickCount >= 5) {
+                modal.classList.add('show');
+            }
+
+            // 当"不要"按钮足够小时，给出提示
+            if (noScale < 0.5) {
+                yesBtn.textContent = '最后一次机会';
+            }
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            modal.classList.remove('show');
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('show');
+            }
+        });
+
+        // 创建撒花效果
+        function createConfetti() {
+            const confettiPieces = ['🎉', '🎊', '💕', '✨', '🌹', '💐'];
+            
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.textContent = confettiPieces[Math.floor(Math.random() * confettiPieces.length)];
+                
+                const startX = Math.random() * window.innerWidth;
+                const startY = window.innerHeight;
+                
+                confetti.style.left = startX + 'px';
+                confetti.style.top = startY + 'px';
+                
+                document.body.appendChild(confetti);
+                
+                const duration = 2 + Math.random() * 1;
+                const xOffset = (Math.random() - 0.5) * 300;
+                const yOffset = -window.innerHeight - 100;
+                
+                confetti.animate([
+                    {
+                        transform: 'translate(0, 0) rotate(0deg)',
+                        opacity: 1
+                    },
+                    {
+                        transform: `translate(${xOffset}px, ${yOffset}px) rotate(${Math.random() * 360}deg)`,
+                        opacity: 0
+                    }
+                ], {
+                    duration: duration * 1000,
+                    easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                });
+                
+                setTimeout(() => confetti.remove(), duration * 1000);
+            }
+        }
+
+        function createBigHeart() {
+            const bigHeartContainer = document.createElement('div');
+            bigHeartContainer.className = 'big-heart';
+            
+            const loveText = document.createElement('div');
+            loveText.className = 'love-text';
+            loveText.textContent = '爱你哦，快来联系我吧！！！';
+            
+            const rose = document.createElement('div');
+            rose.className = 'love-rose';
+            rose.textContent = '🌹';
+            
+            bigHeartContainer.appendChild(loveText);
+            bigHeartContainer.appendChild(rose);
+            document.body.appendChild(bigHeartContainer);
+
+            // 3秒后移除
+            setTimeout(() => {
+                bigHeartContainer.remove();
+            }, 10000);
+        }
+    </script>
+</body>
+</html>
